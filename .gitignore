@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+# Virtual Environment
+.venv/
+venv/
+env/
+ENV/
+# Environment Variables
+.env
+# IDE
+.vscode/
+.idea/
+# Python cache
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+# Logs
+*.log
+# SQLite (if used)
+*.db
+*.sqlite3
+# Uploads
+uploads/
+data/
+# OS files
+.DS_Store
+Thumbs.db
+# Build files
+build/
+dist/
+*.egg-info/
+# Temporary files
+*.tmp
+*.bak
+# Jupyter
+.ipynb_checkpoints/
+# PyCharm
+*.iml
+# VS Code
+.history/
+# Generated reports
+reports/
+exports/
+# MySQL dump files
+*.sql
+# Runtime cache
+.cache/
