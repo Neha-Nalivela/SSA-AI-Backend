@@ -17,4 +17,5 @@ from app.models.student_mark import StudentMark
 from app.models.attainment import Attainment
 from app.models.attendance import Attendance
 from app.models.program_objective import ProgramObjective
+from app.models.course_objective import CourseObjective
 Base.metadata.create_all(bind=engine)
