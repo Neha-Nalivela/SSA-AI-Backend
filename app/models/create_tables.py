@@ -16,4 +16,5 @@ from app.models.program_specific_outcome import ProgramSpecificOutcome
 from app.models.student_mark import StudentMark
 from app.models.attainment import Attainment
 from app.models.attendance import Attendance
+from app.models.program_objective import ProgramObjective
 Base.metadata.create_all(bind=engine)
