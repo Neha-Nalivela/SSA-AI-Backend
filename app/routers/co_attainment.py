@@ -21,3 +21,16 @@ def calculate_co_attainment(
         db,
         course_outcome_id
     )
+@router.post("/calculate/{subject_id}")
+def calculate(
+    subject_id: int,
+    semester: str,
+    academic_year: str,
+    db: Session = Depends(get_db),
+):
+    return COAttainmentService.calculate_subject_attainment(
+    db=db,
+    subject_id=subject_id,
+    semester=semester,
+    academic_year=academic_year,
+)
