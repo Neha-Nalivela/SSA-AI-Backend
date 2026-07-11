@@ -18,4 +18,5 @@ from app.models.attainment import Attainment
 from app.models.attendance import Attendance
 from app.models.program_objective import ProgramObjective
 from app.models.course_objective import CourseObjective
+from app.models.feedback import Feedback
 Base.metadata.create_all(bind=engine)

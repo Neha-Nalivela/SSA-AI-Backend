@@ -19,7 +19,7 @@ import app.routers.po_attainment as po_attainment
 import app.routers.attendance as attendance
 import app.routers.program_objective as program_objective
 import app.routers.course_objective as course_objective
-
+import app.routers.feedback as feedback
 app = FastAPI(
     title="SSA-AI",
     version="1.0.0"
@@ -45,6 +45,7 @@ app.include_router(po_attainment.router)
 app.include_router(attendance.router)
 app.include_router(program_objective.router)
 app.include_router(course_objective.router)
+app.include_router(feedback.router)
 
 @app.get("/")
 def root():
