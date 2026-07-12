@@ -11,7 +11,7 @@ from app.services.assessment_service import AssessmentService
 from app.dependencies.auth import role_required
 
 router = APIRouter(
-    prefix="/assessments",
+    prefix="/api/assessments",
     tags=["Assessment"]
 )
 

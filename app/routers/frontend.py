@@ -2,6 +2,7 @@ from fastapi import APIRouter, Request, Form, Depends
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
+from datetime import date
 
 from app.database import get_db
 from app.services.auth_service import AuthService
@@ -9,6 +10,7 @@ from app.models.student import Student
 from app.models.department import Department
 from app.models.subject import Subject
 from app.models.faculty import Faculty
+from app.models.assessment import Assessment
 router = APIRouter()
 
 templates = Jinja2Templates(directory="app/templates")
@@ -397,5 +399,125 @@ def delete_faculty(
 
     return RedirectResponse(
         url="/faculty",
+        status_code=303
+    )
+@router.get("/assessments")
+def assessments_page(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    assessments = db.query(Assessment).all()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="assessments.html",
+        context={
+            "request": request,
+            "assessments": assessments
+        }
+    )
+@router.get("/assessments/add")
+def add_assessment_page(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    subjects = db.query(Subject).all()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="add_assessment.html",
+        context={
+            "request": request,
+            "subjects": subjects
+        }
+    )
+@router.post("/assessments/add")
+def add_assessment(
+    assessment_name: str = Form(...),
+    assessment_type: str = Form(...),
+    max_marks: int = Form(...),
+    exam_date: str = Form(...),
+    academic_year: str = Form(...),
+    semester: int = Form(...),
+    subject_id: int = Form(...),
+    db: Session = Depends(get_db)
+):
+
+    assessment = Assessment(
+        assessment_name=assessment_name,
+        assessment_type=assessment_type,
+        max_marks=max_marks,
+        exam_date=exam_date,
+        academic_year=academic_year,
+        semester=semester,
+        subject_id=subject_id
+    )
+
+    db.add(assessment)
+    db.commit()
+
+    return RedirectResponse(
+        url="/assessments",
+        status_code=303
+    )
+@router.get("/assessments/edit/{id}")
+def edit_assessment_page(
+    id: int,
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    assessment = db.query(Assessment).filter(Assessment.id == id).first()
+    subjects = db.query(Subject).all()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="edit_assessment.html",
+        context={
+            "request": request,
+            "assessment": assessment,
+            "subjects": subjects
+        }
+    )
+@router.post("/assessments/edit/{id}")
+def update_assessment(
+    id: int,
+    assessment_name: str = Form(...),
+    assessment_type: str = Form(...),
+    max_marks: int = Form(...),
+    exam_date: date = Form(...),
+    academic_year: str = Form(...),
+    semester: int = Form(...),
+    subject_id: int = Form(...),
+    db: Session = Depends(get_db)
+):
+    assessment = db.query(Assessment).filter(Assessment.id == id).first()
+
+    assessment.assessment_name = assessment_name
+    assessment.assessment_type = assessment_type
+    assessment.max_marks = max_marks
+    assessment.exam_date = exam_date
+    assessment.academic_year = academic_year
+    assessment.semester = semester
+    assessment.subject_id = subject_id
+
+    db.commit()
+
+    return RedirectResponse(
+        url="/assessments",
+        status_code=303
+    )
+@router.get("/assessments/delete/{id}")
+def delete_assessment(
+    id: int,
+    db: Session = Depends(get_db)
+):
+    assessment = db.query(Assessment).filter(Assessment.id == id).first()
+
+    if assessment:
+        db.delete(assessment)
+        db.commit()
+
+    return RedirectResponse(
+        url="/assessments",
         status_code=303
     )

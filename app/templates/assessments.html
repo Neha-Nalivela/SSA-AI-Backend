@@ -1,0 +1,38 @@
+<h2>Assessments</h2>
+
+<a href="/assessments/add">Add Assessment</a>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Max Marks</th>
+        <th>Exam Date</th>
+        <th>Academic Year</th>
+        <th>Semester</th>
+        <th>Subject</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for assessment in assessments %}
+    <tr>
+        <td>{{ assessment.id }}</td>
+        <td>{{ assessment.assessment_name }}</td>
+        <td>{{ assessment.assessment_type }}</td>
+        <td>{{ assessment.max_marks }}</td>
+        <td>{{ assessment.exam_date }}</td>
+        <td>{{ assessment.academic_year }}</td>
+        <td>{{ assessment.semester }}</td>
+        <td>{{ assessment.subject_id }}</td>
+
+        <td>
+            <a href="/assessments/edit/{{ assessment.id }}">Edit</a>
+            <a href="/assessments/delete/{{ assessment.id }}"
+               onclick="return confirm('Delete this assessment?')">
+               Delete
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
