@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Students</h2>
+
+<a href="/students/add">Add Student</a>
+
+<br><br>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Roll Number</th>
+        <th>Email</th>
+        <th>Branch</th>
+        <th>Year</th>
+        <th>Semester</th>
+        <th>CGPA</th>
+        <th>Attendance (%)</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for student in students %}
+    <tr>
+        <td>{{ student.id }}</td>
+        <td>{{ student.name }}</td>
+        <td>{{ student.roll_number }}</td>
+        <td>{{ student.email }}</td>
+        <td>{{ student.department.name }}</td>
+        <td>{{ student.year }}</td>
+        <td>{{ student.semester }}</td>
+        <td>{{ student.cgpa }}</td>
+        <td>{{ student.attendance }}</td>
+        <td>
+            <a href="/students/edit/{{ student.id }}">Edit</a>
+            |
+            <a href="/students/delete/{{ student.id }}">
+                <onclick="return confirm('Delete this student?')">
+                Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}

@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey, DECIMAL
 from sqlalchemy.sql import func
 from app.database import Base
-
+from sqlalchemy.orm import relationship
 
 class Student(Base):
     __tablename__ = "students"
@@ -25,7 +25,7 @@ class Student(Base):
         ForeignKey("departments.id"),
         nullable=False
     )
-
+    department = relationship("Department")
     is_active = Column(Boolean, default=True)
 
     created_at = Column(
