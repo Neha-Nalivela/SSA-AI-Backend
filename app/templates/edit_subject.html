@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Edit Subject</h2>
+
+<form method="post" action="/subjects/edit/{{ subject.id }}">
+
+    <label>Subject Code</label><br>
+    <input type="text" name="subject_code" value="{{ subject.subject_code }}" required><br><br>
+
+    <label>Subject Name</label><br>
+    <input type="text" name="subject_name" value="{{ subject.subject_name }}" required><br><br>
+
+    <label>Credits</label><br>
+    <input type="number" name="credits" value="{{ subject.credits }}" required><br><br>
+
+    <label>Year</label><br>
+    <input type="number" name="year" value="{{ subject.year }}" required><br><br>
+
+    <label>Semester</label><br>
+    <input type="number" name="semester" value="{{ subject.semester }}" required><br><br>
+
+    <label>Department ID</label><br>
+    <input type="number" name="department_id" value="{{ subject.department_id }}" required><br><br>
+
+    <label>Faculty ID</label><br>
+    <input type="number" name="faculty_id" value="{{ subject.faculty_id }}" required><br><br>
+
+    <button type="submit">Update Subject</button>
+    <a href="/subjects">Cancel</a>
+
+</form>
+
+{% endblock %}

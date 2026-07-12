@@ -1,0 +1,33 @@
+<h2>Subjects</h2>
+
+<a href="/subjects/add">Add Subject</a>
+
+<br><br>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>ID</th>
+        <th>Subject Code</th>
+        <th>Subject Name</th>
+        <th>Credits</th>
+        <th>Semester</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for subject in subjects %}
+    <tr>
+        <td>{{ subject.id }}</td>
+        <td>{{ subject.subject_code }}</td>
+        <td>{{ subject.subject_name }}</td>
+        <td>{{ subject.credits }}</td>
+        <td>{{ subject.semester }}</td>
+        <td>
+            <a href="/subjects/edit/{{ subject.id }}">Edit</a> |
+            <a href="/subjects/delete/{{ subject.id }}"
+               onclick="return confirm('Are you sure you want to delete this subject?')">
+                Delete
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>

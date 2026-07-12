@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Add Subject</h2>
+
+<form action="/subjects/add" method="post">
+
+    <label>Subject Code</label><br>
+    <input type="text" name="subject_code" required><br><br>
+
+    <label>Subject Name</label><br>
+    <input type="text" name="subject_name" required><br><br>
+
+    <label>Credits</label><br>
+    <input type="number" name="credits" required><br><br>
+
+    <label>Year</label><br>
+    <input type="number" name="year" required><br><br>
+
+    <label>Semester</label><br>
+    <input type="number" name="semester" required><br><br>
+
+    <label>Department</label><br>
+    <select name="department_id" required>
+        {% for department in departments %}
+        <option value="{{ department.id }}">
+            {{ department.name }}
+        </option>
+        {% endfor %}
+    </select><br><br>
+
+    <label>Faculty</label><br>
+    <select name="faculty_id" required>
+        {% for faculty in faculties %}
+        <option value="{{ faculty.id }}">
+            {{ faculty.name }}
+        </option>
+        {% endfor %}
+    </select><br><br>
+
+    <button type="submit">Save Subject</button>
+    <a href="/subjects">Cancel</a>
+
+</form>
+
+{% endblock %}

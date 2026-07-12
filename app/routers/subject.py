@@ -11,7 +11,7 @@ from app.services.subject_service import SubjectService
 from app.dependencies.auth import role_required
 
 router = APIRouter(
-    prefix="/subjects",
+    prefix="/api/subjects",
     tags=["Subject"]
 )
 

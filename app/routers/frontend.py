@@ -7,6 +7,8 @@ from app.database import get_db
 from app.services.auth_service import AuthService
 from app.models.student import Student
 from app.models.department import Department
+from app.models.subject import Subject
+from app.models.faculty import Faculty
 router = APIRouter()
 
 templates = Jinja2Templates(directory="app/templates")
@@ -149,5 +151,125 @@ def delete_student(
 
     return RedirectResponse(
         "/students",
+        status_code=303
+    )
+@router.get("/subjects")
+def subjects_page(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    subjects = db.query(Subject).all()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="subjects.html",
+        context={
+            "request": request,
+            "subjects": subjects
+        }
+    )
+from app.models.department import Department
+from app.models.faculty import Faculty
+
+@router.get("/subjects/add")
+def add_subject_page(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    departments = db.query(Department).all()
+    faculties = db.query(Faculty).all()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="add_subject.html",
+        context={
+            "request": request,
+            "departments": departments,
+            "faculties": faculties
+        }
+    )
+@router.post("/subjects/add")
+def add_subject(
+    subject_code: str = Form(...),
+    subject_name: str = Form(...),
+    credits: int = Form(...),
+    year: int = Form(...),
+    semester: int = Form(...),
+    department_id: int = Form(...),
+    faculty_id: int = Form(...),
+    db: Session = Depends(get_db)
+):
+
+    subject = Subject(
+        subject_code=subject_code,
+        subject_name=subject_name,
+        credits=credits,
+        year=year,
+        semester=semester,
+        department_id=department_id,
+        faculty_id=faculty_id
+    )
+
+    db.add(subject)
+    db.commit()
+
+    return RedirectResponse(
+        url="/subjects",
+        status_code=303
+    )
+@router.get("/subjects/edit/{id}")
+def edit_subject_page(
+    id: int,
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    subject = db.query(Subject).filter(Subject.id == id).first()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="edit_subject.html",
+        context={
+            "request": request,
+            "subject": subject
+        }
+    )
+@router.post("/subjects/edit/{id}")
+def update_subject(
+    id: int,
+    subject_code: str = Form(...),
+    subject_name: str = Form(...),
+    credits: int = Form(...),
+    year: int = Form(...),
+    semester: int = Form(...),
+    department_id: int = Form(...),
+    faculty_id: int = Form(...),
+    db: Session = Depends(get_db)
+):
+    subject = db.query(Subject).filter(Subject.id == id).first()
+
+    subject.subject_code = subject_code
+    subject.subject_name = subject_name
+    subject.credits = credits
+    subject.year = year
+    subject.semester = semester
+    subject.department_id = department_id
+    subject.faculty_id = faculty_id
+
+    db.commit()
+
+    return RedirectResponse("/subjects", status_code=303)
+@router.get("/subjects/delete/{id}")
+def delete_subject(
+    id: int,
+    db: Session = Depends(get_db)
+):
+    subject = db.query(Subject).filter(Subject.id == id).first()
+
+    if subject:
+        db.delete(subject)
+        db.commit()
+
+    return RedirectResponse(
+        url="/subjects",
         status_code=303
     )
