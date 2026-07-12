@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Add Faculty</h2>
+
+<form method="post" action="/faculty/add">
+
+    <label>Employee ID</label><br>
+    <input type="text" name="employee_id" required><br><br>
+
+    <label>Name</label><br>
+    <input type="text" name="name" required><br><br>
+
+    <label>Email</label><br>
+    <input type="email" name="email" required><br><br>
+
+    <label>Phone</label><br>
+    <input type="text" name="phone"><br><br>
+
+    <label>Designation</label><br>
+    <input type="text" name="designation"><br><br>
+
+    <label>Qualification</label><br>
+    <input type="text" name="qualification"><br><br>
+
+    <label>Specialization</label><br>
+    <input type="text" name="specialization"><br><br>
+
+    <label>Department ID</label><br>
+    <input type="number" name="department_id" required><br><br>
+
+    <button type="submit">Add Faculty</button>
+    <a href="/faculty">Cancel</a>
+
+</form>
+
+{% endblock %}

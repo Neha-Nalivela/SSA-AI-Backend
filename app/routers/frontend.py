@@ -273,3 +273,129 @@ def delete_subject(
         url="/subjects",
         status_code=303
     )
+from app.models.faculty import Faculty
+
+@router.get("/faculty")
+def faculty_page(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    faculties = db.query(Faculty).all()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="faculty.html",
+        context={
+            "request": request,
+            "faculties": faculties
+        }
+    )
+@router.get("/faculty/add")
+def add_faculty_page(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    departments = db.query(Department).all()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="add_faculty.html",
+        context={
+            "request": request,
+            "departments": departments
+        }
+    )
+@router.post("/faculty/add")
+def add_faculty(
+    employee_id: str = Form(...),
+    name: str = Form(...),
+    email: str = Form(...),
+    phone: str = Form(""),
+    designation: str = Form(""),
+    qualification: str = Form(""),
+    specialization: str = Form(""),
+    department_id: int = Form(...),
+    db: Session = Depends(get_db)
+):
+
+    faculty = Faculty(
+        employee_id=employee_id,
+        name=name,
+        email=email,
+        phone=phone,
+        designation=designation,
+        qualification=qualification,
+        specialization=specialization,
+        department_id=department_id
+    )
+
+    db.add(faculty)
+    db.commit()
+
+    return RedirectResponse(
+        url="/faculty",
+        status_code=303
+    )
+@router.get("/faculty/edit/{id}")
+def edit_faculty_page(
+    id: int,
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    faculty = db.query(Faculty).filter(Faculty.id == id).first()
+    departments = db.query(Department).all()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="edit_faculty.html",
+        context={
+            "request": request,
+            "faculty": faculty,
+            "departments": departments
+        }
+    )
+@router.post("/faculty/edit/{id}")
+def update_faculty(
+    id: int,
+    employee_id: str = Form(...),
+    name: str = Form(...),
+    email: str = Form(...),
+    phone: str = Form(""),
+    designation: str = Form(""),
+    qualification: str = Form(""),
+    specialization: str = Form(""),
+    department_id: int = Form(...),
+    db: Session = Depends(get_db)
+):
+    faculty = db.query(Faculty).filter(Faculty.id == id).first()
+
+    faculty.employee_id = employee_id
+    faculty.name = name
+    faculty.email = email
+    faculty.phone = phone
+    faculty.designation = designation
+    faculty.qualification = qualification
+    faculty.specialization = specialization
+    faculty.department_id = department_id
+
+    db.commit()
+
+    return RedirectResponse(
+        url="/faculty",
+        status_code=303
+    )
+@router.get("/faculty/delete/{id}")
+def delete_faculty(
+    id: int,
+    db: Session = Depends(get_db)
+):
+    faculty = db.query(Faculty).filter(Faculty.id == id).first()
+
+    if faculty:
+        db.delete(faculty)
+        db.commit()
+
+    return RedirectResponse(
+        url="/faculty",
+        status_code=303
+    )

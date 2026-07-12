@@ -11,7 +11,7 @@ from app.services.faculty_service import FacultyService
 from app.dependencies.auth import role_required
 
 router = APIRouter(
-    prefix="/faculties",
+    prefix="/api/faculty",
     tags=["Faculty"]
 )
 

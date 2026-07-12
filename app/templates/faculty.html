@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Faculty</h2>
+
+<a href="/faculty/add">Add Faculty</a>
+
+<br><br>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>ID</th>
+        <th>Employee ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Designation</th>
+        <th>Qualification</th>
+        <th>Specialization</th>
+        <th>Department ID</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for faculty in faculties %}
+    <tr>
+        <td>{{ faculty.id }}</td>
+        <td>{{ faculty.employee_id }}</td>
+        <td>{{ faculty.name }}</td>
+        <td>{{ faculty.email }}</td>
+        <td>{{ faculty.phone }}</td>
+        <td>{{ faculty.designation }}</td>
+        <td>{{ faculty.qualification }}</td>
+        <td>{{ faculty.specialization }}</td>
+        <td>{{ faculty.department_id }}</td>
+        <td>
+            <a href="/faculty/edit/{{ faculty.id }}">Edit</a> |
+            <a href="/faculty/delete/{{ faculty.id }}">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}
