@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Questions</title>
+</head>
+<body>
+
+<h2>Question Management</h2>
+
+<a href="/questions/add">Add Question</a>
+
+<br><br>
+
+<table border="1" cellpadding="8">
+
+<tr>
+    <th>ID</th>
+    <th>Question No</th>
+    <th>Question</th>
+    <th>Max Marks</th>
+    <th>Assessment ID</th>
+    <th>Actions</th>
+</tr>
+
+{% for question in questions %}
+
+<tr>
+    <td>{{ question.id }}</td>
+    <td>{{ question.question_number }}</td>
+    <td>{{ question.question_text }}</td>
+    <td>{{ question.max_marks }}</td>
+    <td>{{ question.assessment_id }}</td>
+
+    <td>
+        <a href="/questions/edit/{{ question.id }}">Edit</a> |
+        <a href="/questions/delete/{{ question.id }}"
+           onclick="return confirm('Delete this question?')">
+           Delete
+        </a>
+    </td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</body>
+</html>

@@ -11,7 +11,7 @@ from app.services.question_service import QuestionService
 from app.dependencies.auth import role_required
 
 router = APIRouter(
-    prefix="/questions",
+    prefix="/api/questions",
     tags=["Question"]
 )
 

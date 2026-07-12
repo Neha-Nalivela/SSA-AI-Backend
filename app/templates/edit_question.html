@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Question</title>
+</head>
+<body>
+
+<h2>Edit Question</h2>
+
+<form method="post" action="/questions/edit/{{ question.id }}">
+
+<p>
+    <label>Question Number</label><br>
+    <input type="text"
+           name="question_number"
+           value="{{ question.question_number }}"
+           required>
+</p>
+
+<p>
+    <label>Question Text</label><br>
+    <textarea name="question_text"
+              rows="5"
+              cols="50"
+              required>{{ question.question_text }}</textarea>
+</p>
+
+<p>
+    <label>Maximum Marks</label><br>
+    <input type="number"
+           name="max_marks"
+           value="{{ question.max_marks }}"
+           required>
+</p>
+
+<p>
+    <label>Assessment</label><br>
+    <select name="assessment_id" required>
+
+        {% for assessment in assessments %}
+        <option value="{{ assessment.id }}"
+        {% if assessment.id == question.assessment_id %}selected{% endif %}>
+            {{ assessment.assessment_name }}
+        </option>
+        {% endfor %}
+
+    </select>
+</p>
+
+<button type="submit">Update</button>
+<a href="/questions">Cancel</a>
+
+</form>
+
+</body>
+</html>

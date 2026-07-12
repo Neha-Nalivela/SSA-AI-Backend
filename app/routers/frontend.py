@@ -11,6 +11,8 @@ from app.models.department import Department
 from app.models.subject import Subject
 from app.models.faculty import Faculty
 from app.models.assessment import Assessment
+from app.models.question import Question
+
 router = APIRouter()
 
 templates = Jinja2Templates(directory="app/templates")
@@ -519,5 +521,112 @@ def delete_assessment(
 
     return RedirectResponse(
         url="/assessments",
+        status_code=303
+    )
+@router.get("/questions")
+def questions_page(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    questions = db.query(Question).all()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="questions.html",
+        context={
+            "request": request,
+            "questions": questions
+        }
+    )
+@router.get("/questions/add")
+def add_question_page(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    assessments = db.query(Assessment).all()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="add_question.html",
+        context={
+            "request": request,
+            "assessments": assessments
+        }
+    )
+@router.post("/questions/add")
+def add_question(
+    question_number: str = Form(...),
+    question_text: str = Form(...),
+    max_marks: int = Form(...),
+    assessment_id: int = Form(...),
+    db: Session = Depends(get_db)
+):
+    question = Question(
+        question_number=question_number,
+        question_text=question_text,
+        max_marks=max_marks,
+        assessment_id=assessment_id
+    )
+
+    db.add(question)
+    db.commit()
+
+    return RedirectResponse(
+        url="/questions",
+        status_code=303
+    )
+@router.get("/questions/edit/{id}")
+def edit_question_page(
+    id: int,
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    question = db.query(Question).filter(Question.id == id).first()
+    assessments = db.query(Assessment).all()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="edit_question.html",
+        context={
+            "request": request,
+            "question": question,
+            "assessments": assessments
+        }
+    )
+@router.post("/questions/edit/{id}")
+def update_question(
+    id: int,
+    question_number: str = Form(...),
+    question_text: str = Form(...),
+    max_marks: int = Form(...),
+    assessment_id: int = Form(...),
+    db: Session = Depends(get_db)
+):
+    question = db.query(Question).filter(Question.id == id).first()
+
+    question.question_number = question_number
+    question.question_text = question_text
+    question.max_marks = max_marks
+    question.assessment_id = assessment_id
+
+    db.commit()
+
+    return RedirectResponse(
+        url="/questions",
+        status_code=303
+    )
+@router.get("/questions/delete/{id}")
+def delete_question(
+    id: int,
+    db: Session = Depends(get_db)
+):
+    question = db.query(Question).filter(Question.id == id).first()
+
+    if question:
+        db.delete(question)
+        db.commit()
+
+    return RedirectResponse(
+        url="/questions",
         status_code=303
     )
