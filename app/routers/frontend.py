@@ -12,7 +12,7 @@ from app.models.subject import Subject
 from app.models.faculty import Faculty
 from app.models.assessment import Assessment
 from app.models.question import Question
-
+from app.models.mark import Mark
 router = APIRouter()
 
 templates = Jinja2Templates(directory="app/templates")
@@ -630,3 +630,159 @@ def delete_question(
         url="/questions",
         status_code=303
     )
+@router.get("/marks")
+def marks_page(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    marks = db.query(Mark).all()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="marks.html",
+        context={
+            "request": request,
+            "marks": marks
+        }
+    )
+
+
+@router.get("/marks/add")
+def add_mark_page(
+    request: Request,
+    assessment_id: int = None,
+    db: Session = Depends(get_db)
+):
+    students = db.query(Student).all()
+    assessments = db.query(Assessment).all()
+
+    questions = []
+
+    if assessment_id:
+        questions = (
+            db.query(Question)
+            .filter(Question.assessment_id == assessment_id)
+            .all()
+        )
+
+    return templates.TemplateResponse(
+        "add_mark.html",
+        {
+            "request": request,
+            "students": students,
+            "assessments": assessments,
+            "questions": questions,
+            "selected_assessment": assessment_id
+        }
+    )
+
+
+@router.post("/marks/add")
+async def add_mark(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    form = await request.form()
+
+    student_id = int(form["student_id"])
+    assessment_id = int(form["assessment_id"])
+
+    for key, value in form.items():
+
+        if key.startswith("question_"):
+
+            question_id = int(key.replace("question_", ""))
+
+            mark = Mark(
+                student_id=student_id,
+                assessment_id=assessment_id,
+                question_id=question_id,
+                marks_obtained=float(value)
+            )
+
+            db.add(mark)
+
+    db.commit()
+
+    return RedirectResponse(
+        "/marks",
+        status_code=303
+    )
+
+@router.get("/marks/edit/{id}")
+def edit_mark_page(
+    id: int,
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    mark = db.query(Mark).filter(Mark.id == id).first()
+
+    students = db.query(Student).all()
+    assessments = db.query(Assessment).all()
+    questions = db.query(Question).all()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="edit_mark.html",
+        context={
+            "request": request,
+            "mark": mark,
+            "students": students,
+            "assessments": assessments,
+            "questions": questions
+        }
+    )
+
+
+@router.post("/marks/edit/{id}")
+def update_mark(
+    id: int,
+    student_id: int = Form(...),
+    assessment_id: int = Form(...),
+    question_id: int = Form(...),
+    marks_obtained: float = Form(...),
+    db: Session = Depends(get_db)
+):
+
+    mark = db.query(Mark).filter(Mark.id == id).first()
+
+    mark.student_id = student_id
+    mark.assessment_id = assessment_id
+    mark.question_id = question_id
+    mark.marks_obtained = marks_obtained
+
+    db.commit()
+
+    return RedirectResponse(
+        url="/marks",
+        status_code=303
+    )
+
+
+@router.get("/marks/delete/{id}")
+def delete_mark(
+    id: int,
+    db: Session = Depends(get_db)
+):
+    mark = db.query(Mark).filter(Mark.id == id).first()
+
+    if mark:
+        db.delete(mark)
+        db.commit()
+
+    return RedirectResponse(
+        url="/marks",
+        status_code=303
+    )
+@router.get("/questions/by-assessment/{assessment_id}")
+def get_questions(
+    assessment_id: int,
+    db: Session = Depends(get_db)
+):
+    questions = (
+        db.query(Question)
+        .filter(Question.assessment_id == assessment_id)
+        .all()
+    )
+
+    return questions

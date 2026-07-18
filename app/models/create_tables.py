@@ -21,4 +21,5 @@ from app.models.course_objective import CourseObjective
 from app.models.feedback import Feedback
 from app.models.co_po_mapping import COPOMapping
 from app.models.po_peo_mapping import POPEOMapping
+from app.models.mark import Mark
 Base.metadata.create_all(bind=engine)

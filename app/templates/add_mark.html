@@ -1,0 +1,88 @@
+<form method="get" action="/marks/add">
+
+<label>Assessment</label>
+
+<select name="assessment_id">
+
+{% for assessment in assessments %}
+
+<option value="{{ assessment.id }}"
+{% if assessment.id == selected_assessment %}selected{% endif %}>
+
+{{ assessment.assessment_name }}
+
+</option>
+
+{% endfor %}
+
+</select>
+
+<button type="submit">
+Load Questions
+</button>
+
+</form>
+<form method="post" action="/marks/add">
+
+<input type="hidden"
+       name="assessment_id"
+       value="{{ selected_assessment }}">
+
+<label>Student</label>
+
+<select name="student_id">
+
+{% for student in students %}
+
+<option value="{{ student.id }}">
+{{ student.name }}
+</option>
+
+{% endfor %}
+
+</select>
+
+<table>
+
+<tr>
+    <th>Question</th>
+    <th>Max</th>
+    <th>Marks</th>
+</tr>
+
+{% for question in questions %}
+
+<tr>
+
+<td>
+{{ question.question_number }}
+</td>
+
+<td>
+{{ question.max_marks }}
+</td>
+
+<td>
+
+<input
+type="number"
+name="question_{{ question.id }}"
+required>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% if questions %}
+
+<button type="submit">
+Save All Marks
+</button>
+
+{% endif %}
+
+</form>

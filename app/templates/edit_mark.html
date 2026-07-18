@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Marks</title>
+</head>
+<body>
+
+<h2>Edit Marks</h2>
+
+<form method="post" action="/marks/edit/{{ mark.id }}">
+
+<p>
+    <label>Student</label><br>
+    <select name="student_id">
+
+        {% for student in students %}
+        <option
+            value="{{ student.id }}"
+            {% if student.id == mark.student_id %}selected{% endif %}>
+            {{ student.name }}
+        </option>
+        {% endfor %}
+
+    </select>
+</p>
+
+<p>
+    <label>Assessment</label><br>
+    <select name="assessment_id">
+
+        {% for assessment in assessments %}
+        <option
+            value="{{ assessment.id }}"
+            {% if assessment.id == mark.assessment_id %}selected{% endif %}>
+            {{ assessment.assessment_name }}
+        </option>
+        {% endfor %}
+
+    </select>
+</p>
+
+<p>
+    <label>Question</label><br>
+    <select name="question_id">
+
+        {% for question in questions %}
+        <option
+            value="{{ question.id }}"
+            {% if question.id == mark.question_id %}selected{% endif %}>
+            {{ question.question_number }}
+        </option>
+        {% endfor %}
+
+    </select>
+</p>
+
+<p>
+    <label>Marks Obtained</label><br>
+    <input
+        type="number"
+        name="marks_obtained"
+        step="0.5"
+        value="{{ mark.marks_obtained }}"
+        required>
+</p>
+
+<button type="submit">Update</button>
+
+<a href="/marks">Cancel</a>
+
+</form>
+
+</body>
+</html>
