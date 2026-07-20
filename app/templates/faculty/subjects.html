@@ -1,0 +1,44 @@
+{% extends "faculty/base.html" %}
+
+{% block title %}My Subjects{% endblock %}
+
+{% block content %}
+
+<h2>My Subjects</h2>
+
+<div class="card">
+
+    <table class="table">
+
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Subject</th>
+                <th>Semester</th>
+                <th>Credits</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for subject in subjects %}
+
+        <tr>
+
+            <td>{{ subject.subject_code }}</td>
+            <td>{{ subject.subject_name }}</td>
+            <td>{{ subject.semester }}</td>
+            <td>{{ subject.credits }}</td>
+
+            <td>
+                <a href="/faculty/subject/{{ subject.id }}" class="btn">
+                    Open
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

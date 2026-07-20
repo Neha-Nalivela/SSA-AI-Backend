@@ -10,7 +10,9 @@ class Question(Base):
     id = Column(Integer, primary_key=True, index=True)
 
     question_number = Column(String(10), nullable=False)
+
     question_text = Column(String(500), nullable=False)
+
     max_marks = Column(Integer, nullable=False)
 
     assessment_id = Column(
@@ -18,6 +20,22 @@ class Question(Base):
         ForeignKey("assessments.id"),
         nullable=False
     )
+
+    # -------------------------
+    # NEW FIELDS
+    # -------------------------
+
+    co = Column(
+        String(10),
+        nullable=True
+    )
+
+    btl = Column(
+        String(20),
+        nullable=True
+    )
+
+    # -------------------------
 
     is_active = Column(Boolean, default=True)
 

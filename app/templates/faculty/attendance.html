@@ -1,0 +1,77 @@
+{% extends "faculty/base.html" %}
+
+{% block title %}Attendance{% endblock %}
+
+{% block content %}
+
+<h2>{{ subject.subject_name }}</h2>
+
+<h3>Attendance</h3>
+
+<table class="table">
+
+<thead>
+
+<tr>
+
+<th>Roll No</th>
+<th>Name</th>
+<th>Total Classes</th>
+<th>Attended</th>
+<th>%</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for student in students %}
+
+{% set att = attendance.get(student.id) %}
+
+<tr>
+
+<td>{{ student.roll_number }}</td>
+
+<td>{{ student.name }}</td>
+
+<td>
+
+{% if att %}
+{{ att.total_classes }}
+{% else %}
+-
+{% endif %}
+
+</td>
+
+<td>
+
+{% if att %}
+{{ att.attended_classes }}
+{% else %}
+-
+{% endif %}
+
+</td>
+
+<td>
+
+{% if att %}
+{{ att.attendance_percentage }}%
+{% else %}
+-
+{% endif %}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+{% endblock %}

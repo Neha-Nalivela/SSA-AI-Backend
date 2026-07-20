@@ -1,0 +1,46 @@
+{% extends "faculty/base.html" %}
+
+{% block title %}Assessment{% endblock %}
+
+{% block content %}
+
+<h2>{{ assessment.assessment_name }}</h2>
+
+<p><b>Assessment Type:</b> {{ assessment.assessment_type }}</p>
+
+<p><b>Maximum Marks:</b> {{ assessment.max_marks }}</p>
+
+<p><b>Exam Date:</b> {{ assessment.exam_date }}</p>
+
+<hr><br>
+
+<div class="dashboard-grid">
+
+    <a href="/faculty/assessment/{{ assessment.id }}/questions" class="card">
+        <h3>📄 Questions</h3>
+        <p>Create & Manage Questions</p>
+    </a>
+
+    <a href="/faculty/assessment/{{ assessment.id }}/co-mapping" class="card">
+        <h3>🎯 CO Mapping</h3>
+        <p>Map Questions to Course Outcomes</p>
+    </a>
+
+    <a href="/faculty/assessment/{{ assessment.id }}/marks" class="card">
+        <h3>📝 Marks Entry</h3>
+        <p>Enter Student Marks</p>
+    </a>
+
+    <a href="/faculty/assessment/{{ assessment.id }}/co-attainment" class="card">
+        <h3>📊 CO Attainment</h3>
+        <p>Calculate CO Attainment</p>
+    </a>
+
+    <a href="/faculty/assessment/{{ assessment.id }}/report" class="card">
+        <h3>📑 Report</h3>
+        <p>Generate Assessment Report</p>
+    </a>
+
+</div>
+
+{% endblock %}

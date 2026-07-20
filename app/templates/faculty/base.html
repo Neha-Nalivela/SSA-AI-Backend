@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>SSA-AI Faculty Portal</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background:#f5f7fa;
+        }
+
+        .sidebar{
+
+            position:fixed;
+
+            left:0;
+            top:0;
+
+            width:240px;
+            height:100vh;
+
+            background:#1f2937;
+
+            color:white;
+
+        }
+
+        .sidebar h2{
+
+            padding:25px;
+            text-align:center;
+            background:#111827;
+
+        }
+
+        .sidebar ul{
+
+            list-style:none;
+
+        }
+
+        .sidebar ul li{
+
+            border-bottom:1px solid rgba(255,255,255,.08);
+
+        }
+
+        .sidebar ul li a{
+
+            display:block;
+            padding:15px 20px;
+
+            color:white;
+            text-decoration:none;
+
+        }
+
+        .sidebar ul li a:hover{
+
+            background:#374151;
+
+        }
+
+        .main{
+
+            margin-left:240px;
+
+        }
+
+        .header{
+
+            background:white;
+            padding:20px;
+
+            display:flex;
+            justify-content:space-between;
+
+            box-shadow:0 2px 6px rgba(0,0,0,.1);
+
+        }
+
+        .content{
+
+            padding:25px;
+
+        }
+
+        .footer{
+
+            text-align:center;
+            padding:20px;
+            color:gray;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <h2>SSA-AI</h2>
+
+    <ul>
+
+        <li><a href="/faculty/dashboard">Dashboard</a></li>
+
+        <li><a href="/faculty/profile">👤 My Profile</a></li>
+
+        <li><a href="/faculty/subjects">📚 My Subjects</a></li>
+        <li><a href="/faculty/ai_analytics">AI Analytics</a></li>
+        <li><a href="/faculty/reports">Reports</a></li>
+        <li><a href="/faculty/settings">Settings</a></li>
+        <li><a href="/logout">Logout</a></li>
+
+    </ul>
+
+</div>
+
+
+<div class="main">
+
+    <div class="header">
+
+        <h2>Faculty Dashboard</h2>
+
+        <div>
+
+            Welcome Faculty
+
+        </div>
+
+    </div>
+
+
+    <div class="content">
+
+        {% block content %}
+
+        {% endblock %}
+
+    </div>
+
+
+    <div class="footer">
+
+        SSA-AI © 2026
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

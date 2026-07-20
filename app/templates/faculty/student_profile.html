@@ -1,0 +1,47 @@
+{% extends "faculty/base.html" %}
+
+{% block title %}Student Profile{% endblock %}
+
+{% block content %}
+
+<h2>Student Profile</h2>
+
+<div class="card">
+
+<h3>{{ student.name }}</h3>
+
+<p><b>Roll Number:</b> {{ student.roll_number }}</p>
+
+<p><b>Email:</b> {{ student.email }}</p>
+
+<p><b>Department:</b> {{ student.department_id }}</p>
+
+<p><b>Semester:</b> {{ student.semester }}</p>
+
+<hr>
+
+<h3>Academic Summary</h3>
+
+<ul>
+
+<li>Attendance : --%</li>
+
+<li>CIA Average : --</li>
+
+<li>CO Attainment : --%</li>
+
+<li>PO Contribution : --%</li>
+
+<li>PEO Contribution : --%</li>
+
+<li>Predicted Grade : --</li>
+
+<li>Skill Gap : --</li>
+
+<li>Career Recommendation : --</li>
+
+</ul>
+
+</div>
+
+{% endblock %}

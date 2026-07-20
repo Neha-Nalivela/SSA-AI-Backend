@@ -1,0 +1,46 @@
+{% extends "faculty/base.html" %}
+
+{% block title %}Faculty Profile{% endblock %}
+
+{% block content %}
+
+<h2>My Profile</h2>
+
+<div class="card">
+
+    <div style="display:flex;align-items:center;gap:30px;">
+
+        <img src="/static/images/user.png"
+             width="140"
+             height="140"
+             style="border-radius:50%;border:3px solid #ddd;">
+
+        <div>
+
+            <h2>{{ faculty.name }}</h2>
+
+            <p><b>Employee ID:</b> {{ faculty.employee_id }}</p>
+
+            <p><b>Email:</b> {{ faculty.email }}</p>
+
+            <p><b>Phone:</b> {{ faculty.phone }}</p>
+
+            <p><b>Department:</b> {{ faculty.department_id }}</p>
+
+            <p><b>Designation:</b> {{ faculty.designation }}</p>
+
+            <p><b>Qualification:</b> {{ faculty.qualification }}</p>
+
+            <p><b>Specialization:</b> {{ faculty.specialization }}</p>
+
+            <button class="btn">
+                Edit Profile
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

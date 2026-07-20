@@ -1,0 +1,257 @@
+{% extends "faculty/base.html" %}
+
+{% block content %}
+
+<style>
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-bottom:30px;
+}
+
+.card{
+
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+
+}
+
+.card h2{
+
+    color:#2563eb;
+    margin-bottom:10px;
+
+}
+
+.card p{
+
+    color:#555;
+
+}
+
+.section{
+
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:20px;
+
+}
+
+.panel{
+
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+
+}
+
+table{
+
+    width:100%;
+    border-collapse:collapse;
+
+}
+
+table th,
+table td{
+
+    padding:12px;
+    border-bottom:1px solid #ddd;
+    text-align:left;
+
+}
+
+.progress{
+
+    background:#ddd;
+    height:12px;
+    border-radius:20px;
+    overflow:hidden;
+    margin-top:8px;
+
+}
+
+.progress div{
+
+    height:100%;
+    background:#2563eb;
+
+}
+
+ul{
+
+    padding-left:20px;
+
+}
+
+li{
+
+    margin-bottom:12px;
+
+}
+
+</style>
+
+<h2 style="margin-bottom:25px;">Faculty Dashboard</h2>
+
+<div class="cards">
+
+    <div class="card">
+        <h2>5</h2>
+        <p>Assigned Subjects</p>
+    </div>
+
+    <div class="card">
+        <h2>180</h2>
+        <p>Total Students</p>
+    </div>
+
+    <div class="card">
+        <h2>12</h2>
+        <p>Pending Assessments</p>
+    </div>
+
+    <div class="card">
+        <h2>92%</h2>
+        <p>Average Attendance</p>
+    </div>
+
+</div>
+
+
+<div class="section">
+
+<div class="panel">
+
+<h3>Course Outcome Progress</h3>
+
+<br>
+
+<p>CO1</p>
+
+<div class="progress">
+<div style="width:88%;"></div>
+</div>
+
+<br>
+
+<p>CO2</p>
+
+<div class="progress">
+<div style="width:76%;"></div>
+</div>
+
+<br>
+
+<p>CO3</p>
+
+<div class="progress">
+<div style="width:69%;"></div>
+</div>
+
+<br>
+
+<p>CO4</p>
+
+<div class="progress">
+<div style="width:83%;"></div>
+</div>
+
+</div>
+
+
+
+<div class="panel">
+
+<h3>AI Insights</h3>
+
+<br>
+
+<ul>
+
+<li>✔ 12 Students need additional support.</li>
+
+<li>✔ CO2 attainment is below target.</li>
+
+<li>✔ Attendance strongly affects CO performance.</li>
+
+<li>✔ Recommended BTL Level: Apply & Analyze.</li>
+
+<li>✔ Skill Gap detected in Programming Concepts.</li>
+
+</ul>
+
+</div>
+
+</div>
+
+
+<br>
+
+
+<div class="panel">
+
+<h3>Today's Classes</h3>
+
+<br>
+
+<table>
+
+<tr>
+
+<th>Time</th>
+
+<th>Subject</th>
+
+<th>Semester</th>
+
+<th>Room</th>
+
+</tr>
+
+<tr>
+
+<td>09:00 AM</td>
+
+<td>Machine Learning</td>
+
+<td>IV-I</td>
+
+<td>Lab-3</td>
+
+</tr>
+
+<tr>
+
+<td>11:00 AM</td>
+
+<td>Compiler Design</td>
+
+<td>III-II</td>
+
+<td>402</td>
+
+</tr>
+
+<tr>
+
+<td>02:00 PM</td>
+
+<td>Software Engineering</td>
+
+<td>III-I</td>
+
+<td>305</td>
+
+</tr>
+
+</table>
+
+</div>
+
+{% endblock %}

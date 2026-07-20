@@ -1,0 +1,90 @@
+{% extends "faculty/base.html" %}
+
+{% block title %}Subject Dashboard{% endblock %}
+
+{% block content %}
+
+<h2>{{ subject.subject_name }}</h2>
+
+<p><b>Subject Code:</b> {{ subject.subject_code }}</p>
+<p><b>Semester:</b> {{ subject.semester }}</p>
+
+<hr><br>
+
+<div class="dashboard-grid">
+
+    <!-- Students -->
+    <a href="/faculty/subject/{{ subject.id }}/students" class="card">
+        <h3>👨‍🎓 Students</h3>
+        <p>View Student List</p>
+    </a>
+
+    <!-- Assessments -->
+    <a href="/faculty/subject/{{ subject.id }}/assessments" class="card">
+        <h3>📝 Assessments</h3>
+        <p>Create & Manage Assessments</p>
+    </a>
+
+    <!-- Question Papers -->
+    <a href="/faculty/subject/{{ subject.id }}/questions" class="card">
+        <h3>📄 Question Papers</h3>
+        <p>Manage Questions</p>
+    </a>
+
+    <!-- CO Mapping -->
+    <a href="/faculty/subject/{{ subject.id }}/co-mapping" class="card">
+        <h3>🎯 CO Mapping</h3>
+        <p>Map Questions to COs</p>
+    </a>
+
+    <!-- Marks -->
+    <a href="/faculty/subject/{{ subject.id }}/marks" class="card">
+        <h3>📝 Marks Entry</h3>
+        <p>Enter Student Marks</p>
+    </a>
+
+    <!-- Attendance -->
+    <a href="/faculty/subject/{{ subject.id }}/attendance" class="card">
+        <h3>📅 Attendance</h3>
+        <p>Manage Attendance</p>
+    </a>
+
+    <!-- CO -->
+    <a href="/faculty/subject/{{ subject.id }}/co-attainment" class="card">
+        <h3>📊 CO Attainment</h3>
+        <p>View Course Outcome Results</p>
+    </a>
+
+    <!-- PO -->
+    <a href="/faculty/subject/{{ subject.id }}/po-attainment" class="card">
+        <h3>📈 PO Attainment</h3>
+        <p>View Program Outcome Results</p>
+    </a>
+
+    <!-- PEO -->
+    <a href="/faculty/subject/{{ subject.id }}/peo-attainment" class="card">
+        <h3>🎓 PEO Attainment</h3>
+        <p>View Educational Objectives</p>
+    </a>
+
+    <!-- BTL -->
+    <a href="/faculty/subject/{{ subject.id }}/btl-analysis" class="card">
+        <h3>📚 BTL Analysis</h3>
+        <p>Bloom's Taxonomy Analysis</p>
+    </a>
+
+    <!-- AI -->
+    <a href="/faculty/subject/{{ subject.id }}/prediction" class="card">
+        <h3>🤖 AI Prediction</h3>
+        <p>Performance & Skill Prediction</p>
+    </a>
+
+    <!-- Reports -->
+    <a href="/faculty/subject/{{ subject.id }}/reports" class="card">
+        <h3>📑 Reports</h3>
+        <p>Generate Reports</p>
+    </a>
+
+</div>
+
+{% endblock %}

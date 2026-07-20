@@ -1,0 +1,67 @@
+{% extends "faculty/base.html" %}
+
+{% block title %}Questions{% endblock %}
+
+{% block content %}
+
+<h2>{{ assessment.assessment_name }}</h2>
+
+<h3>Question Paper</h3>
+
+<br>
+
+<a href="/faculty/assessment/{{ assessment.id }}/question/new"
+class="btn btn-primary">
+
++ Add Question
+
+</a>
+
+<br><br>
+
+<table class="table">
+
+<thead>
+
+<tr>
+
+<th>Question No</th>
+<th>Question</th>
+<th>Maximum Marks</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for question in questions %}
+
+<tr>
+
+<td>{{ question.question_number }}</td>
+
+<td>{{ question.question_text }}</td>
+
+<td>{{ question.max_marks }}</td>
+
+<td>
+
+<a href="/faculty/question/{{ question.id }}">
+
+View
+
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+{% endblock %}

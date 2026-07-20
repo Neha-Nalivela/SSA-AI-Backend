@@ -1,0 +1,84 @@
+{% extends "faculty/base.html" %}
+
+{% block title %}Add Question{% endblock %}
+
+{% block content %}
+
+<h2>Add Question</h2>
+
+<form method="post">
+
+<label>Question Number</label>
+
+<input
+type="text"
+name="question_number"
+class="form-control"
+required>
+
+<br>
+
+<label>Question</label>
+
+<textarea
+name="question_text"
+class="form-control"
+required>
+</textarea>
+
+<br>
+
+<label>Maximum Marks</label>
+
+<input
+type="number"
+name="max_marks"
+class="form-control"
+required>
+
+<br>
+
+<label>Course Outcome (CO)</label>
+
+<select
+name="co"
+class="form-control">
+
+    <option value="CO1">CO1</option>
+    <option value="CO2">CO2</option>
+    <option value="CO3">CO3</option>
+    <option value="CO4">CO4</option>
+    <option value="CO5">CO5</option>
+    <option value="CO6">CO6</option>
+
+</select>
+
+<br>
+
+<label>Bloom's Taxonomy Level (BTL)</label>
+
+<select
+name="btl"
+class="form-control">
+
+    <option value="L1">L1 - Remember</option>
+    <option value="L2">L2 - Understand</option>
+    <option value="L3">L3 - Apply</option>
+    <option value="L4">L4 - Analyze</option>
+    <option value="L5">L5 - Evaluate</option>
+    <option value="L6">L6 - Create</option>
+
+</select>
+
+<br>
+
+<button
+class="btn btn-success">
+
+Save Question
+
+</button>
+
+</form>
+
+{% endblock %}

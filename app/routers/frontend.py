@@ -13,6 +13,12 @@ from app.models.faculty import Faculty
 from app.models.assessment import Assessment
 from app.models.question import Question
 from app.models.mark import Mark
+
+from app.models.faculty import Faculty
+from app.models.subject import Subject
+from app.models.student_mark import StudentMark
+from app.models.attendance import Attendance
+
 router = APIRouter()
 
 templates = Jinja2Templates(directory="app/templates")
@@ -786,3 +792,365 @@ def get_questions(
     )
 
     return questions
+@router.get("/faculty/dashboard")
+def faculty_dashboard(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    total_students = db.query(Student).count()
+    total_subjects = db.query(Subject).count()
+    total_faculty = db.query(Faculty).count()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="faculty/dashboard.html",
+        context={
+            "request": request,
+            "total_students": total_students,
+            "total_subjects": total_subjects,
+            "total_faculty": total_faculty
+        }
+    )
+from app.models.faculty import Faculty
+
+
+@router.get("/faculty/profile")
+def faculty_profile(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+
+    faculty = db.query(Faculty).first()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="faculty/profile.html",
+        context={
+            "request": request,
+            "faculty": faculty
+        }
+    )
+@router.get("/faculty/subjects")
+def faculty_subjects(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+
+    subjects = db.query(Subject).all()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="faculty/subjects.html",
+        context={
+            "request": request,
+            "subjects": subjects
+        }
+    )
+@router.get("/faculty/subject/{subject_id}")
+def faculty_subject_dashboard(
+    subject_id: int,
+    request: Request,
+    db: Session = Depends(get_db)
+):
+
+    subject = db.query(Subject).filter(
+        Subject.id == subject_id
+    ).first()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="faculty/subject_dashboard.html",
+        context={
+            "request": request,
+            "subject": subject
+        }
+    )
+@router.get("/faculty/subject/{subject_id}/students")
+def faculty_subject_students(
+    subject_id: int,
+    request: Request,
+    db: Session = Depends(get_db)
+):
+
+    subject = db.query(Subject).filter(
+        Subject.id == subject_id
+    ).first()
+
+    # Temporary (until subject-student mapping is implemented)
+    students = db.query(Student).all()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="faculty/students.html",
+        context={
+            "request": request,
+            "subject": subject,
+            "students": students
+        }
+    )
+@router.get("/faculty/student/{student_id}")
+def faculty_student_profile(
+    student_id: int,
+    request: Request,
+    db: Session = Depends(get_db)
+):
+
+    student = db.query(Student).filter(
+        Student.id == student_id
+    ).first()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="faculty/student_profile.html",
+        context={
+            "request": request,
+            "student": student
+        }
+    )
+from app.models.assessment import Assessment
+
+@router.get("/faculty/subject/{subject_id}/assessments")
+def faculty_assessments(
+    subject_id: int,
+    request: Request,
+    db: Session = Depends(get_db)
+):
+
+    subject = db.query(Subject).filter(
+        Subject.id == subject_id
+    ).first()
+
+    assessments = db.query(Assessment).filter(
+        Assessment.subject_id == subject_id
+    ).all()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="faculty/assessments.html",
+        context={
+            "request": request,
+            "subject": subject,
+            "assessments": assessments
+        }
+    )
+@router.get("/faculty/assessment/{assessment_id}")
+def faculty_assessment_dashboard(
+    assessment_id: int,
+    request: Request,
+    db: Session = Depends(get_db)
+):
+
+    assessment = db.query(Assessment).filter(
+        Assessment.id == assessment_id
+    ).first()
+
+    return templates.TemplateResponse(
+        "faculty/assessment_dashboard.html",
+        {
+            "request": request,
+            "assessment": assessment
+        }
+    )
+@router.get("/faculty/assessment/{assessment_id}/marks")
+def faculty_marks(
+    request: Request,
+    assessment_id: int,
+    db: Session = Depends(get_db)
+):
+    assessment = (
+        db.query(Assessment)
+        .filter(Assessment.id == assessment_id)
+        .first()
+    )
+    students = db.query(Student).all()
+    marks = (
+        db.query(StudentMark)
+        .filter(StudentMark.assessment_id == assessment_id)
+        .all()
+    )
+    mark_dict = {
+        m.student_id: m.marks_obtained
+        for m in marks
+    }
+    questions = (
+        db.query(Question)
+        .filter(Question.assessment_id == assessment_id)
+        .all()
+    )
+    return templates.TemplateResponse(
+        request=request,
+        name="faculty/marks_entry.html",
+        context={
+            "request": request,
+            "assessment": assessment,
+            "students": students,
+            "questions": questions,
+            "marks": mark_dict
+        }
+    )
+@router.post("/faculty/assessment/{assessment_id}/marks")
+async def save_marks(
+    request: Request,
+    assessment_id: int,
+    db: Session = Depends(get_db)
+):
+
+    form = await request.form()
+
+    for key, value in form.items():
+
+        if not key.startswith("mark_"):
+            continue
+
+        _, student_id, question_id = key.split("_")
+
+        student_id = int(student_id)
+        question_id = int(question_id)
+
+        if value == "":
+            continue
+
+        mark = db.query(StudentMark).filter(
+            StudentMark.student_id == student_id,
+            StudentMark.question_id == question_id,
+            StudentMark.assessment_id == assessment_id
+        ).first()
+
+        if mark:
+
+            mark.marks_obtained = value
+
+        else:
+
+            mark = StudentMark(
+
+                student_id=student_id,
+
+                question_id=question_id,
+
+                assessment_id=assessment_id,
+
+                marks_obtained=value
+
+            )
+
+            db.add(mark)
+
+    db.commit()
+
+    return RedirectResponse(
+        url=f"/faculty/assessment/{assessment_id}/marks",
+        status_code=303
+    )
+@router.get("/faculty/subject/{subject_id}/attendance")
+def faculty_attendance(
+    request: Request,
+    subject_id: int,
+    db: Session =Depends(get_db)
+):
+
+    subject = (
+        db.query(Subject)
+        .filter(Subject.id == subject_id)
+        .first()
+    )
+
+    students = db.query(Student).all()
+
+    attendance = (
+        db.query(Attendance)
+        .filter(Attendance.subject_id == subject_id)
+        .all()
+    )
+
+    attendance_dict = {
+        a.student_id: a
+        for a in attendance
+    }
+
+    return templates.TemplateResponse(
+        request=request,
+        name="faculty/attendance.html",
+        context={
+            "request": request,
+            "subject": subject,
+            "students": students,
+            "attendance": attendance_dict
+        }
+    )
+@router.get("/faculty/assessment/{assessment_id}/questions")
+def faculty_questions(
+    request: Request,
+    assessment_id: int,
+    db: Session = Depends(get_db)
+):
+
+    assessment = (
+        db.query(Assessment)
+        .filter(Assessment.id == assessment_id)
+        .first()
+    )
+
+    questions = (
+        db.query(Question)
+        .filter(Question.assessment_id == assessment_id)
+        .all()
+    )
+
+    return templates.TemplateResponse(
+        request=request,
+        name="faculty/questions.html",
+        context={
+            "request": request,
+            "assessment": assessment,
+            "questions": questions
+        }
+    )
+@router.get("/faculty/assessment/{assessment_id}/question/new")
+def new_question(
+    request: Request,
+    assessment_id: int,
+    db: Session = Depends(get_db)
+):
+
+    assessment = (
+        db.query(Assessment)
+        .filter(Assessment.id == assessment_id)
+        .first()
+    )
+
+    return templates.TemplateResponse(
+        request=request,
+        name="faculty/add_question.html",
+        context={
+            "request": request,
+            "assessment": assessment
+        }
+    )
+@router.post("/faculty/assessment/{assessment_id}/question/new")
+def save_question(
+    assessment_id: int,
+    question_number: str = Form(...),
+    question_text: str = Form(...),
+    max_marks: int = Form(...),
+    co: str = Form(...),
+    btl: str = Form(...),
+    db: Session = Depends(get_db)
+):
+
+    question = Question(
+        assessment_id=assessment_id,
+        question_number=question_number,
+        question_text=question_text,
+        max_marks=max_marks,
+        co=co,
+        btl=btl
+    )
+
+    db.add(question)
+    db.commit()
+
+    return RedirectResponse(
+        url=f"/faculty/assessment/{assessment_id}/questions",
+        status_code=303
+    )

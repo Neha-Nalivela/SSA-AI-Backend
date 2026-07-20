@@ -1,0 +1,73 @@
+{% extends "faculty/base.html" %}
+
+{% block title %}Marks Entry{% endblock %}
+
+{% block content %}
+
+<h2>{{ assessment.assessment_name }}</h2>
+
+<form method="post">
+
+<table class="table">
+
+    <thead>
+
+        <tr>
+
+            <th>Roll No</th>
+            <th>Student Name</th>
+
+            {% for q in questions %}
+                <th>{{ q.question_number }}</th>
+            {% endfor %}
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+    {% for student in students %}
+
+        <tr>
+
+            <td>{{ student.roll_number }}</td>
+
+            <td>{{ student.name }}</td>
+
+            {% for q in questions %}
+
+            <td>
+
+                <input
+                    type="number"
+                    name="mark_{{ student.id }}_{{ q.id }}"
+                    value=""
+                    min="0"
+                    max="{{ q.max_marks }}"
+                    style="width:70px"
+                >
+
+            </td>
+
+            {% endfor %}
+
+        </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+<br>
+
+<button class="btn btn-primary">
+
+Save Marks
+
+</button>
+
+</form>
+
+{% endblock %}
